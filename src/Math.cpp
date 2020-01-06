@@ -1,5 +1,11 @@
 #include "Math.h"
 
+
+
+static void FrameEnd() {
+	shapesThisFrame.clear();
+}
+
 void Cell::prepareCellForDraw(unsigned int a_screenSize, unsigned int a_cellCount, Vector2 a_cellPosition)
 {
 	// Calculate cell size
