@@ -17,10 +17,16 @@ Application::Application(unsigned int a_size, unsigned int a_cellCount, bool a_f
 	for (int x = 0; x < a_cellCount; x++) {
 		for (int y = 0; y < a_cellCount; y++) {
 			Cell cell;
-			cell.cellState = (rand() % 100) > 50 ? CellStates::DEAD : CellStates::ALIVE;
+			//cell.cellState = (rand() % 100) > 30 ? CellStates::DEAD : CellStates::ALIVE;
+			cell.cellState = CellStates::DEAD;
 			cellList.insert(std::pair<Vector2, Cell>({ x, y }, cell));
 		}
 	}
+
+	cellList[{0, 0}].cellState = CellStates::ALIVE;
+	cellList[{1, 1}].cellState = CellStates::ALIVE;
+	//cellList[{0, 1}].cellState = CellStates::ALIVE;
+	//cellList[{1, 0}].cellState = CellStates::ALIVE;
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -31,44 +37,47 @@ Application::Application(unsigned int a_size, unsigned int a_cellCount, bool a_f
 
 			// Process events here
 		}
+		
+		
+		//// Process logic here
+		//std::for_each(cellList.begin(), cellList.end(), [&](auto& p) {
+		//	// Get the neighbours
+		//	int numberOfAliveNeighbours = 0;
+		//	for (int x = -1; x <= 1; x++) {
+		//		for (int y = -1; y <= 1; y++) {
+		//			if (x != 0 && y != 0) {
+		//				if (cellList.find({ p.first.x + x, p.first.y + y }) != cellList.end()) {
+		//					if (cellList.at({ p.first.x + x, p.first.y + y }).cellState == CellStates::ALIVE)
+		//						numberOfAliveNeighbours++;
+		//				}
+		//			}
+		//		}
+		//	}
 
-		// Process logic here
-		std::for_each(cellList.begin(), cellList.end(), [&](auto& p) {
-			// Get the neighbours
-			int numberOfAliveNeighbours = 0;
-			for (int x = -1; x <= 1; x++) {
-				for (int y = -1; y <= 1; y++) {
-					if (x != 0 && y != 0) {
-						if (cellList.find({ x,y }) != cellList.end()) {
-							if (cellList.at({ x,y }).cellState == CellStates::ALIVE)
-								numberOfAliveNeighbours++;
-						}
-					}
-				}
-			}
+		//	//std::cout << numberOfAliveNeighbours;
+		//	
+		//	/* Check with the rules taken from [https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life] */
 
-			//std::cout << numberOfAliveNeighbours;
-			
-			/* Check with the rules taken from [https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life] */
+		//	// Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+		//	// Any live cell with two or three live neighbours lives on to the next generation.
+		//	if (p.second.cellState == CellStates::ALIVE && (numberOfAliveNeighbours < 2 || numberOfAliveNeighbours > 3)) {
+		//		p.second.newCellState = CellStates::DEAD;
+		//	}
+		//	// Any live cell with two or three live neighbours lives on to the next generation.
+		//	if (p.second.cellState == CellStates::ALIVE && (numberOfAliveNeighbours == 2 || numberOfAliveNeighbours == 3)) {
+		//		p.second.newCellState = CellStates::ALIVE;
+		//	}
+		//	// Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+		//	if (p.second.cellState == CellStates::DEAD && numberOfAliveNeighbours == 3) {
+		//		p.second.newCellState = CellStates::ALIVE;
+		//	}
+		//});
+		//
 
-			// Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-			// Any live cell with two or three live neighbours lives on to the next generation.
-			if (p.second.cellState == CellStates::ALIVE && (numberOfAliveNeighbours < 2 || numberOfAliveNeighbours > 3)) {
-				p.second.newCellState = CellStates::DEAD;
-			}
-			// Any live cell with two or three live neighbours lives on to the next generation.
-			if (p.second.cellState == CellStates::ALIVE && (numberOfAliveNeighbours == 2 || numberOfAliveNeighbours == 3)) {
-				p.second.newCellState = CellStates::ALIVE;
-			}
-			// Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-			if (p.second.cellState == CellStates::DEAD && numberOfAliveNeighbours == 3) {
-				p.second.newCellState = CellStates::ALIVE;
-			}
-		});
-
-		std::for_each(cellList.begin(), cellList.end(), [](auto& p) {
-			p.second.cellState = p.second.newCellState;
-		});
+		//std::for_each(cellList.begin(), cellList.end(), [](auto& p) {
+		//	p.second.cellState = p.second.newCellState;
+		//});
+		
 
 		window.clear();
 
